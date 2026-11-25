@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0f172a">
+
+    <title>Арина Дементьева — Кандидат в президенты школы №1383</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-color: #1e293b;
+            --accent-color: #3b82f6;
+            --accent-hover: #2563eb;
+            --text-color: #f8fafc;
+            --muted-color: #94a3b8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .container {
+            width: min(1100px, 90%);
+            margin: 0 auto;
+        }
+
+        /* Фон */
+
+        body::before,
+        body::after {
+            content: "";
+            position: fixed;
+            width: 450px;
+            height: 450px;
+            border-radius: 50%;
+            filter: blur(120px);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        body::before {
+            background: rgba(59, 130, 246, 0.12);
+            top: -200px;
+            left: -150px;
+        }
+
+        body::after {
+            background: rgba(37, 99, 235, 0.08);
+            bottom: -200px;
+            right: -150px;
+        }
+
+        /* Главный экран */
+
+        .hero {
+            min-height: 620px;
+            display: flex;
+            align-items: center;
+            padding: 90px 0 70px;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 850px;
+            margin: 0 auto;
+            animation: appear 1s ease;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 10px 18px;
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            background: rgba(59, 130, 246, 0.1);
+            color: #93c5fd;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 30px;
+        }
+
+        .hero h1 {
+            font-size: clamp(34px, 6vw, 65px);
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 25px;
+            background: linear-gradient(120deg, #ffffff, #93c5fd);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .slogan {
+            font-size: clamp(18px, 3vw, 24px);
+            font-weight: 600;
+            line-height: 1.5;
+            margin-bottom: 25px;
+        }
+
+        .intro {
+            color: var(--muted-color);
+            font-size: 16px;
+            line-height: 1.8;
+            max-width: 720px;
+            margin: 0 auto 35px;
+        }
+
+        .button {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px 30px;
+            border-radius: 12px;
+            background: var(--accent-color);
+            color: white;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 700;
+            transition: 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background: var(--accent-hover);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(59, 130, 246, 0.25);
+        }
+
+        /* Программа */
+
+        .section {
+            padding: 55px 0 90px;
+        }
+
+        .section-heading {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-heading h2 {
+            font-size: clamp(27px, 4vw, 40px);
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+
+        .section-heading p {
+            color: var(--muted-color);
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        /* Карточки */
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 25px;
+        }
+
+        .flip-card {
+            height: 350px;
+            min-width: 0;
+            perspective: 1200px;
+            position: relative;
+        }
+
+        .flip-toggle {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            opacity: 0;
+        }
+
+        .card-inner {
+            display: block;
+            position: relative;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            transform-style: preserve-3d;
+            transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+        }
+
+        .flip-toggle:checked + .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-toggle:focus-visible + .card-inner .card-front {
+            outline: 3px solid #93c5fd;
+            outline-offset: 5px;
+        }
+
+        .card-face {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 35px;
+            border: 1px solid rgba(148, 163, 184, 0.15);
+            border-radius: 22px;
+            background: var(--card-color);
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            overflow: hidden;
+        }
+
+        .card-front {
+            transition: border-color 0.3s ease;
+        }
+
+        .card-front:hover {
+            border-color: rgba(59, 130, 246, 0.7);
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+            background: linear-gradient(145deg, #1e3a5f, #1e293b);
+            border-color: rgba(59, 130, 246, 0.4);
+            text-align: center;
+            align-items: center;
+        }
+
+        .card-icon {
+            display: block;
+            font-size: 38px;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            display: block;
+            font-size: 21px;
+            font-weight: 800;
+            margin-bottom: 17px;
+            line-height: 1.4;
+        }
+
+        .card-text {
+            display: block;
+            color: var(--muted-color);
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .flip-hint {
+            display: block;
+            margin-top: 22px;
+            color: #60a5fa;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.2px;
+        }
+
+        .back-title {
+            display: block;
+            font-size: 23px;
+            font-weight: 800;
+            margin-bottom: 18px;
+        }
+
+        .back-text {
+            display: block;
+            color: #cbd5e1;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .back-hint {
+            display: block;
+            margin-top: 25px;
+            color: #93c5fd;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        /* Финальный блок */
+
+        .cta {
+            padding: 75px 30px;
+            margin-bottom: 80px;
+            text-align: center;
+            border-radius: 25px;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            background: linear-gradient(
+                135deg,
+                rgba(30, 58, 95, 0.9),
+                rgba(30, 41, 59, 0.9)
+            );
+        }
+
+        .cta h2 {
+            font-size: clamp(28px, 4vw, 42px);
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+
+        .cta p {
+            max-width: 700px;
+            margin: 0 auto 30px;
+            color: #cbd5e1;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        /* Подвал */
+
+        footer {
+            padding: 30px 0;
+            border-top: 1px solid rgba(148, 163, 184, 0.15);
+            text-align: center;
+            color: var(--muted-color);
+            font-size: 12px;
+            line-height: 1.8;
+        }
+
+        footer span {
+            color: #60a5fa;
+        }
+
+        /* Анимация */
+
+        @keyframes appear {
+            from {
+                opacity: 0;
+                transform: translateY(25px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Телефоны */
+
+        @media (max-width: 700px) {
+            .hero {
+                min-height: auto;
+                padding: 90px 0 65px;
+            }
+
+            .badge {
+                font-size: 10px;
+                line-height: 1.6;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .flip-card {
+                height: 390px;
+            }
+
+            .card-face {
+                padding: 28px;
+            }
+
+            .card-title {
+                font-size: 19px;
+            }
+
+            .card-text {
+                font-size: 13px;
+            }
+
+            .cta {
+                padding: 55px 22px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="hero">
+        <div class="container">
+            <div class="hero-content">
+
+                <div class="badge">
+                    ВЫБОРЫ ПРЕЗИДЕНТА ШКОЛЫ №1383 • 10 «А»
+                </div>
+
+                <h1>Дементьева Арина Владимировна</h1>
+
+                <p class="slogan">
+                    «Если хотите сделать нашу школу по-настоящему комфортной — голосуйте за меня!»
+                </p>
+
+                <p class="intro">
+                    Всем привет! Меня зовут Арина Дементьева, я ученица 10 «А» класса.
+                    После долгих размышлений о том, как сделать нашу школу уютнее,
+                    я подготовила 5 конкретных шагов, которые мы сможем реализовать вместе.
+                </p>
+
+                <a class="button"
+                   href="https://t.me/RinoDat"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                    Предложить свою идею
+                </a>
+
+            </div>
+        </div>
+    </header>
+
+    <main>
+
+        <section class="section">
+            <div class="container">
+
+                <div class="section-heading">
+                    <h2>Моя программа</h2>
+                    <p>
+                        Пять инициатив, которые сделают школьную жизнь лучше.
+                        Нажми на карточку, чтобы перевернуть её.
+                    </p>
+                </div>
+
+                <div class="cards-grid">
+
+                    <!-- 1. Ящик для идей -->
+
+                    <article class="flip-card">
+                        <input class="flip-toggle" type="checkbox" id="idea-1">
+
+                        <label class="card-inner" for="idea-1">
+
+                            <span class="card-face card-front">
+                                <span class="card-icon">📮</span>
+
+                                <span class="card-title">
+                                    1. Ящик для идей
+                                </span>
+
+                                <span class="card-text">
+                                    Создам специальную школьную почту и онлайн-форму, куда каждый сможет отправить свою идею. Каждое слово будет услышано, а я помогу воплотить лучшие инициативы в жизнь.
+                                </span>
+
+                                <span class="flip-hint">
+                                    НАЖМИ, ЧТОБЫ ПЕРЕВЕРНУТЬ ↻
+                                </span>
+                            </span>
+
+                            <span class="card-face card-back">
+                                <span class="card-icon">💡</span>
+
+                                <span class="back-title">
+                                    Твои идеи важны!
+                                </span>
+
+                                <span class="back-text">
+                                    У каждого ученика должна быть возможность
+                                    предложить улучшение для школы.
+                                    Я хочу, чтобы хорошие идеи не оставались без внимания.
+                                </span>
+
+                                <span class="back-hint">
+                                    НАЖМИ, ЧТОБЫ ВЕРНУТЬ ↻
+                                </span>
+                            </span>
+
+                        </label>
+                    </article>
+
+                    <!-- 2. Сокращение лишней домашки -->
+
+                    <article class="flip-card">
+                        <input class="flip-toggle" type="checkbox" id="idea-2">
+
+                        <label class="card-inner" for="idea-2">
+
+                            <span class="card-face card-front">
+                                <span class="card-icon">📚</span>
+
+                                <span class="card-title">
+                                    2. Сокращение лишней домашки
+                                </span>
+
+                                <span class="card-text">
+                                    Нас часто нагружают по полной программе в школе, а после уроков не остается свободного времени. Опираясь на нормы СанПиНа, я буду добиваться максимального сокращения ненужной домашней работы.
+                                </span>
+
+                                <span class="flip-hint">
+                                    НАЖМИ, ЧТОБЫ ПЕРЕВЕРНУТЬ ↻
+                                </span>
+                            </span>
+
+                            <span class="card-face card-back">
+                                <span class="card-icon">⚖️</span>
+
+                                <span class="back-title">
+                                    Время на жизнь
+                                </span>
+
+                                <span class="back-text">
+                                    Учёба важна, но у школьников должно
+                                    оставаться время на отдых, увлечения
+                                    и личные дела.
+                                </span>
+
+                                <span class="back-hint">
+                                    НАЖМИ, ЧТОБЫ ВЕРНУТЬ ↻
+                                </span>
+                            </span>
+
+                        </label>
+                    </article>
+
+                    <!-- 3. Больше тематических дней -->
+
+                    <article class="flip-card">
+                        <input class="flip-toggle" type="checkbox" id="idea-3">
+
+                        <label class="card-inner" for="idea-3">
+
+                            <span class="card-face card-front">
+                                <span class="card-icon">🎉</span>
+
+                                <span class="card-title">
+                                    3. Больше тематических дней
+                                </span>
+
+                                <span class="card-text">
+                                    Сейчас в школе масштабно отмечаются только Новый год и День учителя. Я планирую добавить больше тематических дней и небольших ивентов, чтобы школьные будни стали ярче.
+                                </span>
+
+                                <span class="flip-hint">
+                                    НАЖМИ, ЧТОБЫ ПЕРЕВЕРНУТЬ ↻
+                                </span>
+                            </span>
+
+                            <span class="card-face card-back">
+                                <span class="card-icon">🎈</span>
+
+                                <span class="back-title">
+                                    Больше ярких моментов
+                                </span>
+
+                                <span class="back-text">
+                                    Школьная жизнь — это не только уроки.
+                                    Тематические дни и небольшие мероприятия
+                                    могут объединить учеников и подарить новые впечатления.
+                                </span>
+
+                                <span class="back-hint">
+                                    НАЖМИ, ЧТОБЫ ВЕРНУТЬ ↻
+                                </span>
+                            </span>
+
+                        </label>
+                    </article>
+
+                    <!-- 4. Полноценная зона отдыха -->
+
+                    <article class="flip-card">
+                        <input class="flip-toggle" type="checkbox" id="idea-4">
+
+                        <label class="card-inner" for="idea-4">
+
+                            <span class="card-face card-front">
+                                <span class="card-icon">🛋️</span>
+
+                                <span class="card-title">
+                                    4. Полноценная зона отдыха
+                                </span>
+
+                                <span class="card-text">
+                                    В коридорах мало диванчиков и не хватает тихого места для перезагрузки. Я добьюсь выделения отдельного помещения в школе, куда каждый сможет прийти отдохнуть и спокойно заняться своими делами.
+                                </span>
+
+                                <span class="flip-hint">
+                                    НАЖМИ, ЧТОБЫ ПЕРЕВЕРНУТЬ ↻
+                                </span>
+                            </span>
+
+                            <span class="card-face card-back">
+                                <span class="card-icon">☕</span>
+
+                                <span class="back-title">
+                                    Место для отдыха
+                                </span>
+
+                                <span class="back-text">
+                                    Хочется, чтобы у учеников было
+                                    комфортное пространство, где можно
+                                    спокойно провести свободное время.
+                                </span>
+
+                                <span class="back-hint">
+                                    НАЖМИ, ЧТОБЫ ВЕРНУТЬ ↻
+                                </span>
+                            </span>
+
+                        </label>
+                    </article>
+
+                    <!-- 5. Прямой диалог без бюрократии -->
+
+                    <article class="flip-card">
+                        <input class="flip-toggle" type="checkbox" id="idea-5">
+
+                        <label class="card-inner" for="idea-5">
+
+                            <span class="card-face card-front">
+                                <span class="card-icon">🤝</span>
+
+                                <span class="card-title">
+                                    5. Прямой диалог без бюрократии
+                                </span>
+
+                                <span class="card-text">
+                                    Я уже состою в школьном совете и имею прямую связь с администрацией. Стану вашим официальным представителем: буду регулярно собирать актуальные вопросы и выносить их на совет для реального решения проблем.
+                                </span>
+
+                                <span class="flip-hint">
+                                    НАЖМИ, ЧТОБЫ ПЕРЕВЕРНУТЬ ↻
+                                </span>
+                            </span>
+
+                            <span class="card-face card-back">
+                                <span class="card-icon">🗣️</span>
+
+                                <span class="back-title">
+                                    Тебя услышат
+                                </span>
+
+                                <span class="back-text">
+                                    Важно не просто собирать мнения,
+                                    а передавать вопросы администрации
+                                    и добиваться реальных изменений.
+                                </span>
+
+                                <span class="back-hint">
+                                    НАЖМИ, ЧТОБЫ ВЕРНУТЬ ↻
+                                </span>
+                            </span>
+
+                        </label>
+                    </article>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Финальный призыв -->
+
+        <section class="container">
+            <div class="cta">
+
+                <h2>Твой голос решает!</h2>
+
+                <p>
+                    Если вы хотите, чтобы наша школа №1383 стала по-настоящему комфортной,
+                    голосуйте за меня! Есть идея, которую стоит добавить в программу?
+                    Напиши мне прямо сейчас.
+                </p>
+
+                <a class="button"
+                   href="https://t.me/RinoDat"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                    Связаться со мной
+                </a>
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>© 2026 Дементьева Арина Владимировна</p>
+            <p>Кандидат в президенты школы №1383 • 10 «А»</p>
+            <p>Сделано с <span>♥</span> для нашей школы</p>
+        </div>
+    </footer>
+
+</body>
+</html>
